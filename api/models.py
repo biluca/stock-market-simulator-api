@@ -25,6 +25,9 @@ class Owner(BaseModel):
     cash = models.DecimalField(decimal_places=2, max_digits=12)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
+    def __str__(self) -> str:
+        return f"{self.name} [{self.user.username}]"
+
 
 class Stock(BaseModel):
     company_name = models.CharField(max_length=128, null=False)
@@ -46,6 +49,9 @@ class Portfolio(BaseModel):
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     quantity = models.PositiveBigIntegerField()
+
+    def __str__(self) -> str:
+        return f"[{self.stock.abbreviation}, {self.quantity}] {self.owner.name}"
 
 
 class PriceMovement(BaseModel):
