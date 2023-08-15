@@ -49,6 +49,9 @@ class Portfolio(BaseModel):
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     quantity = models.PositiveBigIntegerField()
+    transaction_price = models.DecimalField(
+        decimal_places=2, max_digits=12, default=0.0
+    )
 
     def __str__(self) -> str:
         return f"[{self.stock.abbreviation}, {self.quantity}] {self.owner.name}"
