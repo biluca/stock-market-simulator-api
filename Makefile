@@ -1,6 +1,6 @@
 .PHONY: dev
 
-createsuperuser:
+user:
 	python3 manage.py createsuperuser
 
 migrations:

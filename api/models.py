@@ -38,6 +38,9 @@ class Stock(BaseModel):
 
     owners = models.ManyToManyField(Owner, through="Portfolio")
 
+    def __str__(self) -> str:
+        return f"[{self.abbreviation}] {self.company_name}"
+
 
 class Portfolio(BaseModel):
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
@@ -52,6 +55,16 @@ class PriceMovement(BaseModel):
 
     @property
     def percentual_change(self):
-        change = self.movement_amount / (self.price - self.movement_amount)
+        change = self.movement_amount / (self.price - self.movement_amount) * 100
         return round(change, 3)
-    
+
+    @property
+    def percentual_change_friendly(self):
+        return f"{self.percentual_change} %"
+
+    @property
+    def stock_abbreviation(self):
+        return self.stock.abbreviation
+
+    def __str__(self) -> str:
+        return f"[{self.stock.abbreviation}] {self.price} ({self.percentual_change}%)"
