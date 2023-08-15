@@ -9,7 +9,6 @@ class OwnerSerializer(serializers.ModelSerializer):
 
 
 class StockSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Stock
         fields = "__all__"
@@ -25,3 +24,8 @@ class PriceMovementSerializer(serializers.ModelSerializer):
     class Meta:
         model = PriceMovement
         fields = "__all__"
+
+
+class TransactionSerializer(serializers.Serializer):
+    stock_abbreviation = serializers.CharField()
+    quantity = serializers.IntegerField()
