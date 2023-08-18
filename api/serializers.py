@@ -5,7 +5,7 @@ from api.models import Owner, Stock, Portfolio, PriceMovement
 class OwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Owner
-        fields = "__all__"
+        fields = ["id", "name", "cash"]
 
 
 class StockSerializer(serializers.ModelSerializer):
@@ -26,6 +26,12 @@ class PriceMovementSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class TransactionSerializer(serializers.Serializer):
+class BuyTransactionSerializer(serializers.Serializer):
     stock_abbreviation = serializers.CharField()
     quantity = serializers.IntegerField()
+
+
+class SellTransactionSerializer(serializers.Serializer):
+    stock_abbreviation = serializers.CharField()
+    quantity = serializers.IntegerField()
+    sell_all = serializers.BooleanField()
