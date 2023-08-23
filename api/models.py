@@ -57,15 +57,25 @@ class Portfolio(BaseModel):
         return f"[{self.stock.abbreviation}, {self.quantity}] {self.owner.name}"
 
 
+class PriceMovementManager(models.manager.Manager):
+    def get_stock_last_price(self, stock):
+        last_price = (
+            PriceMovement.objects.filter(stock=stock).order_by("-created_at").first()
+        )
+        return last_price
+
+
 class PriceMovement(BaseModel):
     stock = models.ForeignKey(Stock, on_delete=models.DO_NOTHING)
     movement_amount = models.DecimalField(decimal_places=2, max_digits=12)
     price = models.DecimalField(decimal_places=2, max_digits=12)
 
+    objects = PriceMovementManager()
+
     @property
     def percentual_change(self):
         change = self.movement_amount / (self.price - self.movement_amount) * 100
-        return round(change, 3)
+        return round(change, 2)
 
     @property
     def percentual_change_friendly(self):

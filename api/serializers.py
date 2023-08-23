@@ -9,9 +9,16 @@ class OwnerSerializer(serializers.ModelSerializer):
 
 
 class StockSerializer(serializers.ModelSerializer):
+    price = serializers.SerializerMethodField("get_price_movements")
+
+    def get_price_movements(self, obj):
+        last_price = PriceMovement.objects.get_stock_last_price(obj)
+
+        return PriceMovementSerializer(last_price).data
+
     class Meta:
         model = Stock
-        fields = "__all__"
+        fields = ["id", "company_name", "abbreviation", "price"]
 
 
 class PortfolioSerializer(serializers.ModelSerializer):
@@ -23,7 +30,7 @@ class PortfolioSerializer(serializers.ModelSerializer):
 class PriceMovementSerializer(serializers.ModelSerializer):
     class Meta:
         model = PriceMovement
-        fields = "__all__"
+        fields = ["id", "price", "movement_amount", "percentual_change_friendly", "created_at"]
 
 
 class BuyTransactionSerializer(serializers.Serializer):

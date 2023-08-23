@@ -1,5 +1,5 @@
-from api.serializers import TransactionSerializer
-from api.models import Stock, Owner, Portfolio
+from api.serializers import BuyTransactionSerializer, SellTransactionSerializer
+from api.models import Stock, Owner, Portfolio, PriceMovement
 from django.contrib.auth.models import User
 from rest_framework.exceptions import ValidationError
 from decimal import Decimal
@@ -14,27 +14,36 @@ class Processor:
 
 class StockBuyProcessor(Processor):
     def process(self, request):
-        serializer = TransactionSerializer(data=request.data)
+        serializer = BuyTransactionSerializer(data=request.data)
+        transaction = self.build_and_validate_transaction(request, serializer)
 
+        portfolio = self.create_portfolio(transaction)
+        self.update_owner_cash(transaction)
+
+        return portfolio
+
+    def build_and_validate_transaction(self, request, serializer):
         if serializer.is_valid(raise_exception=True):
             user = request.user
             owner = self.find_and_validate_owner(user)
             stock_abbreviation = serializer.validated_data["stock_abbreviation"]
             stock = self.find_and_validate_stock(stock_abbreviation)
             quantity = serializer.validated_data["quantity"]
+            transaction_price = self.find_stock_price(stock)
 
-            data = {
+            transaction = {
                 "owner": owner,
                 "stock": stock,
                 "quantity": quantity,
-                "transaction_price": 9.99,
+                "transaction_price": transaction_price,
             }
 
-            self.validate_owners_cash(data)
-            portfolio = self.create_portfolio(data)
-            self.update_owner_cash(data)
+            self.validate_owners_cash(transaction)
 
-            return portfolio
+            return transaction
+
+    def find_stock_price(self, stock):
+        return PriceMovement.objects.get_stock_last_price(stock).price
 
     def validate_owners_cash(self, data):
         buy_total_amount = data.get("quantity") * data.get("transaction_price")
@@ -74,4 +83,17 @@ class StockBuyProcessor(Processor):
 
 class StockSellProcessor(Processor):
     def process(self, request):
+        serializer = SellTransactionSerializer(data=request.data)
+        transaction = self.build_and_validate_transaction(request, serializer)
+
+        portfolio = self.create_portfolio(transaction)
+        self.update_owner_cash(transaction)
+
+    def build_and_validate_transaction(self, request, serializer):
+        pass
+
+    def create_portfolio(self, transaction):
+        pass
+
+    def update_owner_cash(self, transaction):
         pass
