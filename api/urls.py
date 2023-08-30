@@ -7,6 +7,7 @@ from api.views import (
     PortfolioView,
     PriceMovementView,
     BuyStockView,
+    SimulateStockMartketView,
 )
 
 router = routers.DefaultRouter()
@@ -17,6 +18,11 @@ router.register(r"prices", PriceMovementView)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("operation/buy/", BuyStockView.as_view({"post":"buy"}), name="buy-stock"),
+    path("operation/buy/", BuyStockView.as_view({"post": "buy"}), name="buy-stock"),
     # path('stocks/sell/', SellStockView.as_view(), name='sell-stock'),
+    path(
+        "operation/simulate/",
+        SimulateStockMartketView.as_view({"get": "simulate"}),
+        name="simulate",
+    ),
 ]

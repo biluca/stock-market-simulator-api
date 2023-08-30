@@ -9,6 +9,7 @@
 
 - Real-time Data: The API should provide real-time stock market data for stocks listed in the DASDAQ and DUNEMI markets.
 - Historical Data: The API should provide access to historical stock data for analysis purposes.
+- Simulation Data: The Stock Market Data will be generated using a Simulation Algorithm.
 
 ## Buying Stocks
 

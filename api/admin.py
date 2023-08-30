@@ -34,6 +34,10 @@ class PriceMovementAdmin(admin.ModelAdmin):
         "updated_at",
     ]
 
+    list_filter = [
+        "stock",
+    ]
+
 
 @admin.register(Owner)
 class OwnerAdmin(admin.ModelAdmin):

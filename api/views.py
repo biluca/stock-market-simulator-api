@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 
-from api.processors import StockBuyProcessor, StockSellProcessor
+from api.processors import StockBuyProcessor, StockSellProcessor, StockDataSimulationProcessor
 
 from api.models import Owner, Stock, Portfolio, PriceMovement
 from api.serializers import (
@@ -81,6 +81,15 @@ class SellStockView(GenericViewSet):
 
     def sell(self, request, *args, **kwargs):
         processor = StockSellProcessor()
+        processor.process(request)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class SimulateStockMartketView(GenericViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def simulate(self, request, *args, **kwargs):
+        processor = StockDataSimulationProcessor()
         processor.process(request)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
