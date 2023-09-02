@@ -16,6 +16,10 @@ class CreatedAndUpdatedModel(models.Model):
 class BaseModel(CreatedAndUpdatedModel):
     id = models.UUIDField(default=uuid4, primary_key=True)
 
+    @property
+    def uuid(self):
+        return str(self.id)[0:8]
+
     class Meta:
         abstract = True
 
@@ -27,6 +31,10 @@ class Owner(BaseModel):
 
     def __str__(self) -> str:
         return f"{self.name} [{self.user.username}]"
+
+    @property
+    def cash_friendly(self):
+        return f"${self.cash:.2f}"
 
 
 class Stock(BaseModel):
