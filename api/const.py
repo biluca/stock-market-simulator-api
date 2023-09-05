@@ -1,6 +1,17 @@
 from collections.abc import Callable
 
 
+class HTTP_METHODS:
+    GET = "GET"
+    POST = "POST"
+    PUT = "PUT"
+    PATCH = "PATCH"
+    DELETE = "DELETE"
+    HEAD = "HEAD"
+    OPTIONS = "OPTIONS"
+    TRACE = "TRACE"
+
+
 class Industry:
     CHOICES = (
         ("GUNS", "Guns"),
@@ -26,10 +37,3 @@ class Industry:
         ("FUEL_DISTRIBUTION", "Fuel Distribution"),
         ("RADIO", "Radio"),
     )
-
-
-class StockMarket:
-    CHOICES = [
-        ("DASDAQ", "DASDAQ"),
-        ("DUNEMI", "DUNEMI"),
-    ]

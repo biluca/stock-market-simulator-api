@@ -1,6 +1,27 @@
 from django.contrib import admin
+from api.models import User, Company, Stock, Transaction, Portfolio, PriceMovement
 
-from api.models import Owner, Stock, Portfolio, PriceMovement
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ["name", "cash_friendly"]
+
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = [
+        "uuid",
+        "name",
+        "ceo_name",
+        "description",
+        "industry",
+        "created_at",
+        "updated_at",
+    ]
+
+    list_filter = [
+        "name",
+    ]
 
 
 @admin.register(Stock)
@@ -8,17 +29,13 @@ class StockAdmin(admin.ModelAdmin):
     list_display = [
         "uuid",
         "abbreviation",
-        "company_name",
-        "description",
-        "industry",
-        "stock_market",
+        "company",
         "created_at",
         "updated_at",
     ]
 
     list_filter = [
         "abbreviation",
-        "company_name",
     ]
 
 
@@ -26,10 +43,8 @@ class StockAdmin(admin.ModelAdmin):
 class PriceMovementAdmin(admin.ModelAdmin):
     list_display = [
         "uuid",
-        "stock_abbreviation",
-        "price",
-        "movement_amount",
-        "percentual_change_friendly",
+        "stock",
+        "price_friendly",
         "created_at",
         "updated_at",
     ]
@@ -39,26 +54,26 @@ class PriceMovementAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(Owner)
-class OwnerAdmin(admin.ModelAdmin):
+@admin.register(Portfolio)
+class PortfolioAdmin(admin.ModelAdmin):
     list_display = [
         "uuid",
-        "name",
-        "cash_friendly",
         "user",
         "created_at",
         "updated_at",
     ]
 
 
-@admin.register(Portfolio)
-class PortfolioAdmin(admin.ModelAdmin):
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
     list_display = [
         "uuid",
-        "owner",
+        "portfolio",
         "stock",
-        "quantity",
-        "transaction_price",
         "created_at",
         "updated_at",
+    ]
+
+    list_filter = [
+        "stock",
     ]
