@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dummy_stock_market_api.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stock_market_simulator_api.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

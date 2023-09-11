@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Company, User, Stock, Portfolio, PriceMovement
+from api.models import Company, User, Stock, Portfolio, PriceMovement, Transaction
 from django.contrib.auth.hashers import make_password
 
 
@@ -30,17 +30,16 @@ class UserSerializer(serializers.ModelSerializer):
             "last_login",
             "is_superuser",
         ]
-    
+
     def create(self, validated_data):
         modified_data = self.make_password(validated_data)
         instance = User.objects.create(**modified_data)
         return instance
-    
+
     def make_password(self, validated_data):
         hashed_password = str(make_password(validated_data["password"]))
         validated_data["password"] = hashed_password
         return validated_data
-
 
 
 class StockSerializer(serializers.ModelSerializer):
@@ -55,10 +54,21 @@ class StockSerializer(serializers.ModelSerializer):
         fields = ["id", "company", "abbreviation", "price"]
 
 
+class StockSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stock
+        fields = ["id", "company", "abbreviation"]
+
+
 class PortfolioSerializer(serializers.ModelSerializer):
+
+
     class Meta:
         model = Portfolio
-        fields = "__all__"
+        fields = [
+            "uuid",
+            "transactions",
+        ]
 
 
 class PriceMovementSerializer(serializers.ModelSerializer):
@@ -71,12 +81,19 @@ class PriceMovementSerializer(serializers.ModelSerializer):
         ]
 
 
-class BuyTransactionSerializer(serializers.Serializer):
-    stock_abbreviation = serializers.CharField()
+class OperationStockSerializer(serializers.Serializer):
+    stock_abbreviation = serializers.CharField(write_only=True)
     quantity = serializers.IntegerField()
+    price = serializers.DecimalField(read_only=True, max_digits=14, decimal_places=2)
+    stock = serializers.SerializerMethodField(
+        "serialize_stock",
+    )
+
+    def serialize_stock(self, obj):
+        return StockSimpleSerializer(obj.stock).data
 
 
-class SellTransactionSerializer(serializers.Serializer):
-    stock_abbreviation = serializers.CharField()
-    quantity = serializers.IntegerField()
-    sell_all = serializers.BooleanField()
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ["uuid", "price", "quantity"]

@@ -1,5 +1,5 @@
 """
-ASGI config for dummy_stock_market_api project.
+ASGI config for stock_market_simulator_api project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dummy_stock_market_api.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stock_market_simulator_api.settings')
 
 application = get_asgi_application()

@@ -35,8 +35,24 @@ class User(DjangoUser):
         return f"${self.cash:.2f}"
 
 
+class PortfolioManager(models.manager.Manager):
+    def get_stock_transactions(self, portfolio, stock=None):
+        if stock == None:
+            transactions = Transaction.objects.filter(portfolio=portfolio).order_by(
+                "-created_at"
+            )
+        else:
+            transactions = Transaction.objects.filter(
+                stock=stock, portfolio=portfolio
+            ).order_by("-created_at")
+
+       
+        return transactions
+
+
 class Portfolio(BaseModel):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    objects = PortfolioManager()
 
     def __str__(self) -> str:
         return f"{self.user.name}"

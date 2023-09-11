@@ -7,23 +7,19 @@ from rest_framework import permissions
 from django.contrib.auth.models import User as DjangoUser
 
 from api.processors import (
-    StockBuyProcessor,
-    StockSellProcessor,
+    BuyStockProcessor,
+    SellStockProcessor,
     StockDataSimulationProcessor,
 )
 
 from api.models import User, Stock, Portfolio, PriceMovement, Company
 from api.serializers import (
     CompanyDetailSerializer,
-    CompanyListSerializer,
     UserSerializer,
     StockSerializer,
     PortfolioSerializer,
-    PriceMovementSerializer,
-    BuyTransactionSerializer,
-    SellTransactionSerializer,
+    OperationStockSerializer,
 )
-from api.permissions import IsStockOwner
 from api.const import HTTP_METHODS
 
 
@@ -60,8 +56,9 @@ class SimulateStockMartketView(GenericViewSet):
 
 class CompanyView(ListDetailModelViewSet):
     queryset = Company.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
     serializer_class = CompanyDetailSerializer
+
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class StockView(ModelViewSet):
@@ -78,16 +75,37 @@ class UserView(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-# class PortfolioView(ModelViewSet):
-#     permission_classes = [IsStockOwner, permissions.IsAuthenticated]
+class PortfolioView(ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
 
-#     queryset = Portfolio.objects.all()
-#     serializer_class = PortfolioSerializer
+    queryset = Portfolio.objects.all()
+    serializer_class = PortfolioSerializer
 
-#     def get_queryset(self):
-#         user = self.request.user
-#         owner = User.objects.get(user=user)
-#         return self.queryset.filter(owner=owner)
+    def get_queryset(self):
+        user = User.objects.get(id=self.request.user.id)
+        return self.queryset.filter(user=user)
+
+
+class BuyStockView(GenericViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def buy(self, request, *args, **kwargs):
+        processor = BuyStockProcessor()
+        transaction = processor.process(request)
+
+        serializer = OperationStockSerializer(transaction)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SellStockView(GenericViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def sell(self, request, *args, **kwargs):
+        processor = SellStockProcessor()
+        transaction = processor.process(request)
+
+        serializer = OperationStockSerializer(transaction)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # class PriceMovementView(ModelViewSet):
@@ -95,20 +113,6 @@ class UserView(ModelViewSet):
 #     serializer_class = PriceMovementSerializer
 
 #     permission_classes = [permissions.IsAuthenticated, IsUserOwner]
-
-
-# class BuyStockView(GenericViewSet):
-#     serializer_class = BuyTransactionSerializer
-
-#     permission_classes = [permissions.IsAuthenticated, IsUserOwner]
-
-#     def buy(self, request, *args, **kwargs):
-#         processor = StockBuyProcessor()
-#         portfolio = processor.process(request)
-
-#         portfolioSerializer = PortfolioSerializer(portfolio)
-
-#         return Response(portfolioSerializer.data, status=status.HTTP_200_OK)
 
 
 # class SellStockView(GenericViewSet):
