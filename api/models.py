@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum, Avg, F
 from django.contrib.auth.models import User as DjangoUser
 from uuid import uuid4
 from api.const import Industry
@@ -36,18 +37,26 @@ class User(DjangoUser):
 
 
 class PortfolioManager(models.manager.Manager):
-    def get_stock_transactions(self, portfolio, stock=None):
-        if stock == None:
-            transactions = Transaction.objects.filter(portfolio=portfolio).order_by(
-                "-created_at"
-            )
-        else:
-            transactions = Transaction.objects.filter(
-                stock=stock, portfolio=portfolio
-            ).order_by("-created_at")
+    def get_portfolio_summary(self, user):
+        portfolio = self.get(user=user)
+        transactions = Transaction.objects.filter(portfolio=portfolio)
 
-       
-        return transactions
+        summary = transactions.values("stock", "stock__abbreviation").annotate(
+            total_quantity=Sum("quantity"),
+        )
+
+        portfolio_summary = []
+        for item in summary:
+            data = {
+                "stock_id": item["stock"],
+                "stock_abbreviation": item["stock__abbreviation"],
+                "total_quantity": item["total_quantity"],
+            }
+
+            if item["total_quantity"] > 0:
+                portfolio_summary.append(data)
+
+        return portfolio_summary
 
 
 class Portfolio(BaseModel):
@@ -79,11 +88,22 @@ class Stock(BaseModel):
         return f"[{self.abbreviation}] {self.company.name}"
 
 
+class TransactionManager(models.manager.Manager):
+    def get_portfolio_stock_transactions(self, portfolio, stock):
+        return self.filter(portfolio=portfolio, stock=stock)
+
+
 class Transaction(BaseModel):
     portfolio = models.ForeignKey(Portfolio, on_delete=models.DO_NOTHING)
     stock = models.ForeignKey(Stock, on_delete=models.DO_NOTHING)
     price = models.DecimalField(decimal_places=2, max_digits=12, default=0)
-    quantity = models.PositiveBigIntegerField(default=0)
+    quantity = models.BigIntegerField(default=0)
+
+    objects = TransactionManager()
+
+    @property
+    def transaction_amount(self):
+        return abs(self.price) * abs(self.quantity)
 
 
 class PriceMovementManager(models.manager.Manager):

@@ -1,4 +1,4 @@
-from api.serializers import StockSerializer
+from api.serializers import OperationStockSerializer
 from api.models import Stock, User, Portfolio, PriceMovement, Transaction
 from api.simulator import MeanReversionSimulator
 
@@ -51,13 +51,15 @@ class StockProcessor(Processor):
         quantity = transaction["quantity"]
         price = transaction["price"]
 
-        user.cash = user_cash(quantity * price)
+
+        user.cash = user_cash + (quantity * price)
         user.save()
+        
 
 
 class BuyStockProcessor(StockProcessor):
     def process(self, request):
-        serializer = StockSerializer(data=request.data)
+        serializer = OperationStockSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         quantity = request.data["quantity"]
@@ -81,16 +83,19 @@ class BuyStockProcessor(StockProcessor):
     def validate_transaction(self, transaction):
         user = transaction["portfolio"].user
         user_cash = user.cash
-        quantity = transaction["quantity"]
+        transaction_quantity = transaction["quantity"]
         price = transaction["price"]
 
-        if user_cash < (quantity * price):
+        if abs(transaction_quantity) <= 0:
+            raise ValueError("Make sure that the Quanity is Greater or Equal to 1!")
+
+        if user_cash < (transaction_quantity * price):
             raise ValueError("User does not have sufficient funds!")
 
 
 class SellStockProcessor(StockProcessor):
     def process(self, request):
-        serializer = StockSerializer(data=request.data)
+        serializer = OperationStockSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         quantity = request.data["quantity"]
@@ -99,7 +104,7 @@ class SellStockProcessor(StockProcessor):
         price = PriceMovement.objects.get_stock_last_price(stock).price
 
         transaction = {
-            "quantity": quantity,
+            "quantity": quantity * (-1),
             "stock": stock,
             "portfolio": portfolio,
             "price": price,
@@ -116,14 +121,19 @@ class SellStockProcessor(StockProcessor):
         stock = transaction["stock"]
         transaction_quantity = transaction["quantity"]
 
-        transactions = Portfolio.objects.get_stock_transactions(portfolio, stock)
+        if abs(transaction_quantity) <= 0:
+            raise ValueError("Make sure that the Quanity is Greater or Equal to 1!")
+
+        transactions = Transaction.objects.get_portfolio_stock_transactions(
+            portfolio, stock
+        )
 
         quantity_stocks_owned = 0
         for transaction in transactions:
             if transaction.quantity > 0:
                 quantity_stocks_owned = quantity_stocks_owned + transaction.quantity
 
-        if transaction_quantity > quantity_stocks_owned:
+        if abs(transaction_quantity) > quantity_stocks_owned:
             raise ValueError(
                 f"User does not Own that Quantity on the [{stock.abbreviation}] Stock! Quantity Owned: {quantity_stocks_owned}"
             )

@@ -60,15 +60,16 @@ class StockSimpleSerializer(serializers.ModelSerializer):
         fields = ["id", "company", "abbreviation"]
 
 
-class PortfolioSerializer(serializers.ModelSerializer):
-
-
+class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Portfolio
-        fields = [
-            "uuid",
-            "transactions",
-        ]
+        model = Transaction
+        fields = "__all__"
+
+
+class PortfolioSerializer(serializers.Serializer):
+    stock_id = serializers.CharField()
+    stock_abbreviation = serializers.CharField()
+    total_quantity = serializers.IntegerField()
 
 
 class PriceMovementSerializer(serializers.ModelSerializer):
@@ -84,16 +85,14 @@ class PriceMovementSerializer(serializers.ModelSerializer):
 class OperationStockSerializer(serializers.Serializer):
     stock_abbreviation = serializers.CharField(write_only=True)
     quantity = serializers.IntegerField()
-    price = serializers.DecimalField(read_only=True, max_digits=14, decimal_places=2)
-    stock = serializers.SerializerMethodField(
-        "serialize_stock",
+    price = serializers.DecimalField(
+        read_only=True, max_digits=14, decimal_places=2, coerce_to_string=False
     )
+    transaction_amount = serializers.SerializerMethodField()
+    stock = serializers.SerializerMethodField()
 
-    def serialize_stock(self, obj):
+    def get_stock(self, obj):
         return StockSimpleSerializer(obj.stock).data
 
-
-class TransactionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Transaction
-        fields = ["uuid", "price", "quantity"]
+    def get_transaction_amount(self, obj):
+        return obj.transaction_amount
