@@ -15,7 +15,6 @@ from api.processors import (
 from api.models import User, Stock, Portfolio, PriceMovement, Company
 from api.serializers import (
     CompanyDetailSerializer,
-    UserSerializer,
     StockSerializer,
     PortfolioSerializer,
     OperationStockSerializer,
@@ -68,13 +67,6 @@ class StockView(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class UserView(ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-    permission_classes = [permissions.IsAuthenticated]
-
-
 class PortfolioView(GenericViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PortfolioSerializer
@@ -82,7 +74,7 @@ class PortfolioView(GenericViewSet):
     def get(self, request, *args, **kwargs):
         user = request.user
         summary = Portfolio.objects.get_portfolio_summary(user)
-       
+
         serializer = PortfolioSerializer(summary, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -107,4 +99,3 @@ class SellStockView(GenericViewSet):
 
         serializer = OperationStockSerializer(transaction)
         return Response(serializer.data, status=status.HTTP_200_OK)
-

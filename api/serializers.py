@@ -1,45 +1,18 @@
 from rest_framework import serializers
-from api.models import Company, User, Stock, Portfolio, PriceMovement, Transaction
+from api.models import Company, Stock, Portfolio, PriceMovement, Transaction
 from django.contrib.auth.hashers import make_password
 
 
 class CompanyDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ["id", "name", "ceo_name", "description", "description", "industry"]
+        fields = ["id", "name", "ceo_name", "description", "industry"]
 
 
 class CompanyListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = ["id", "name", "ceo_name"]
-
-
-class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-
-    class Meta:
-        model = User
-        fields = [
-            "id",
-            "username",
-            "password",
-            "name",
-            "cash",
-            "is_staff",
-            "last_login",
-            "is_superuser",
-        ]
-
-    def create(self, validated_data):
-        modified_data = self.make_password(validated_data)
-        instance = User.objects.create(**modified_data)
-        return instance
-
-    def make_password(self, validated_data):
-        hashed_password = str(make_password(validated_data["password"]))
-        validated_data["password"] = hashed_password
-        return validated_data
 
 
 class StockSerializer(serializers.ModelSerializer):
