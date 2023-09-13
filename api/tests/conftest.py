@@ -1,6 +1,6 @@
 import pytest
 
-from api.models import User, Company, Stock
+from api.models import User, Company, Stock, PriceMovement
 from rest_framework.test import APIClient
 from django.contrib.auth.hashers import make_password
 
@@ -60,3 +60,25 @@ def stock(company):
 
     new_stock, new = Stock.objects.get_or_create(**stock_data)
     return new_stock
+
+
+@pytest.fixture
+def stock_buy_sell(company):
+    stock_data = {
+        "company": company,
+        "abbreviation": "BSS",
+    }
+
+    new_stock, new = Stock.objects.get_or_create(**stock_data)
+    return new_stock
+
+
+@pytest.fixture
+def stock_price_movement(stock_buy_sell):
+    price_movement_data = {
+        "stock": stock_buy_sell,
+        "price": 10.00,
+    }
+
+    new_price_movement, new = PriceMovement.objects.get_or_create(**price_movement_data)
+    return new_price_movement

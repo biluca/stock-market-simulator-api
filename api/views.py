@@ -83,19 +83,32 @@ class BuyStockView(GenericViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def buy(self, request, *args, **kwargs):
-        processor = BuyStockProcessor()
-        transaction = processor.process(request)
+        try:
+            processor = BuyStockProcessor()
+            transaction = processor.process(request)
 
-        serializer = OperationStockSerializer(transaction)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = OperationStockSerializer(transaction)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as error:
+            error_data = {
+                "error": str(error),
+            }
+            return Response(error_data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class SellStockView(GenericViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def sell(self, request, *args, **kwargs):
-        processor = SellStockProcessor()
-        transaction = processor.process(request)
+        try:
+            processor = SellStockProcessor()
+            transaction = processor.process(request)
 
-        serializer = OperationStockSerializer(transaction)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = OperationStockSerializer(transaction)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as error:
+            error_data = {
+                "error": str(error),
+            }
+            return Response(error_data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

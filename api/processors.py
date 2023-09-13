@@ -1,6 +1,7 @@
 from api.serializers import OperationStockSerializer
 from api.models import Stock, User, Portfolio, PriceMovement, Transaction
 from api.simulator import MeanReversionSimulator
+from decimal import Decimal
 
 
 class Processor:
@@ -35,10 +36,10 @@ class StockDataSimulationProcessor(Processor):
 
 class StockProcessor(Processor):
     def get_stock(self, stock_abbreviation):
-        stock = Stock.objects.get(abbreviation=stock_abbreviation)
-        if stock:
-            return stock
-        raise ValueError("Stock Not Found!")
+        try:
+            return Stock.objects.get(abbreviation=stock_abbreviation)
+        except:
+            raise ValueError("Stock Not Found!")
 
     def get_or_create_portfolio(self, user):
         portfolio_user = User.objects.get(id=user.id)
@@ -49,12 +50,10 @@ class StockProcessor(Processor):
         user = transaction["portfolio"].user
         user_cash = user.cash
         quantity = transaction["quantity"]
-        price = transaction["price"]
+        price = Decimal(transaction["price"])
 
-
-        user.cash = user_cash + (quantity * price)
+        user.cash = user_cash - (quantity * price)
         user.save()
-        
 
 
 class BuyStockProcessor(StockProcessor):
@@ -62,10 +61,14 @@ class BuyStockProcessor(StockProcessor):
         serializer = OperationStockSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        quantity = request.data["quantity"]
-        stock = self.get_stock(request.data["stock_abbreviation"])
+        quantity = serializer.validated_data["quantity"]
+        stock = self.get_stock(serializer.validated_data["stock_abbreviation"])
         portfolio = self.get_or_create_portfolio(request.user)
-        price = PriceMovement.objects.get_stock_last_price(stock).price
+        price_movement = PriceMovement.objects.get_stock_last_price(stock)
+        if price_movement:
+            price = price_movement.price
+        else:
+            price = 0.0
 
         transaction = {
             "quantity": quantity,
@@ -98,8 +101,8 @@ class SellStockProcessor(StockProcessor):
         serializer = OperationStockSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        quantity = request.data["quantity"]
-        stock = self.get_stock(request.data["stock_abbreviation"])
+        quantity = serializer.validated_data["quantity"]
+        stock = self.get_stock(serializer.validated_data["stock_abbreviation"])
         portfolio = self.get_or_create_portfolio(request.user)
         price = PriceMovement.objects.get_stock_last_price(stock).price
 
