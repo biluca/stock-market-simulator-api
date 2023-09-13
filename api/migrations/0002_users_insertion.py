@@ -32,6 +32,15 @@ def users_insertion(apps, schema_editor):
             "name": "Trevor Philips",
             "cash": 8000000,
         },
+        {
+            "username": "biluca",
+            "is_staff": True,
+            "password": make_password("biluca"),
+            "last_login": "2013-09-17 00:00:00",
+            "is_superuser": True,
+            "name": "Vinicios Biluca",
+            "cash": 800,
+        },
     ]
 
     for user in users:
