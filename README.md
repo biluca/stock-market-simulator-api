@@ -1,21 +1,19 @@
 # Stock Market Simulator API
 
 <p align="center">
-<img src="stock_market_simulator_api/media/dummy_logo.png" height="180"  />
-
-*This logo was generated using [Dall-E-2](https://openai.com/dall-e-2) by [OpenAI](https://openai.com/)*
+TAKE THE DAM PICTURE!!
 </p>
 
-### Welcome to the Dumily Sunley a GTA V Inspired Stock Market API
+### Welcome to Stock Market Simulation API, a GTA V Inspired Application
 
-This is an exciting project developed to explore the depths of [Django Framework](https://www.djangoproject.com/) and expand proficiency in [Python](https://www.python.org/) programming. The concepts of this project were based on the game [GTA V](https://www.rockstargames.com/br/gta-v), specically on the [BAWSAQ](https://gta.fandom.com/wiki/BAWSAQ) and [LCN](https://gta.fandom.com/wiki/Liberty_City_National_Exchange) Stock Markets. The API provides the basic operations like Buying and Selling Stocks.
+This is an exciting project developed to explore the depths of [Django Framework](https://www.djangoproject.com/) and expand proficiency in [Python](https://www.python.org/) programming. The concepts of this project were inspired by the game [GTA V](https://www.rockstargames.com/br/gta-v), specically on the [BAWSAQ](https://gta.fandom.com/wiki/BAWSAQ) and [LCN](https://gta.fandom.com/wiki/Liberty_City_National_Exchange) Stock Markets. The API provides the basic operations like Buying and Selling Stocks and also provides a feature to simulation the stock market prices variation.
 
 <p align="center">
 <img src="stock_market_simulator_api/media/bawsaq.png" height="180"  />
 
 </p>
 
-## Installation
+## Before Running
 
 Run the following commands:
 
@@ -31,7 +29,15 @@ This commands will create a simple database on which the application will work.
 ```sh
 make run
 ```
-The Server will run at http://127.0.0.1:8000/
+The Server will run at http://0.0.0.0:8000/
+
+## Using Docker
+
+The project provide a Dockerfile allowing you to start a container with the Application.
+Once you install Docker & Docker Compose on your computer ([see details here](https://docs.docker.com/)), you can run the following command:
+```sh
+docker-compose up
+```
 
 ## Contact Info
 
