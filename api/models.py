@@ -113,6 +113,12 @@ class PriceMovementManager(models.manager.Manager):
         )
         return last_price
 
+    def get_stock_last_prices(self, stock):
+        last_prices = (
+            PriceMovement.objects.filter(stock=stock).order_by("-created_at")[:20]
+        )
+        return last_prices
+
 
 class PriceMovement(BaseModel):
     class Meta:

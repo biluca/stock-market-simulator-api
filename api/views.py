@@ -4,7 +4,6 @@ from rest_framework.request import Request
 from rest_framework import status
 from rest_framework import permissions
 
-from django.contrib.auth.models import User as DjangoUser
 
 from api.processors import (
     BuyStockProcessor,
@@ -12,14 +11,14 @@ from api.processors import (
     StockDataSimulationProcessor,
 )
 
-from api.models import User, Stock, Portfolio, PriceMovement, Company
+from api.models import User, Stock, Portfolio, Company
 from api.serializers import (
     CompanyDetailSerializer,
-    StockSerializer,
+    DetailStockSerializer,
+    ListStockSerializer,
     PortfolioSerializer,
     OperationStockSerializer,
 )
-from api.const import HTTP_METHODS
 
 
 class ListDetailModelViewSet(ModelViewSet):
@@ -60,9 +59,10 @@ class CompanyView(ListDetailModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class StockView(ModelViewSet):
+class StockView(ListDetailModelViewSet):
     queryset = Stock.objects.all()
-    serializer_class = StockSerializer
+    detail_serializer_class = DetailStockSerializer
+    list_serializer_class = ListStockSerializer
 
     permission_classes = [permissions.IsAuthenticated]
 

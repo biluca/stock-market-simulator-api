@@ -15,16 +15,27 @@ class CompanyListSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "ceo_name"]
 
 
-class StockSerializer(serializers.ModelSerializer):
-    price = serializers.SerializerMethodField("get_price_movements")
+class ListStockSerializer(serializers.ModelSerializer):
+    last_price = serializers.SerializerMethodField()
 
-    def get_price_movements(self, obj):
+    def get_last_price(self, obj):
         last_price = PriceMovement.objects.get_stock_last_price(obj)
         return PriceMovementSerializer(last_price).data
 
     class Meta:
         model = Stock
-        fields = ["id", "company", "abbreviation", "price"]
+        fields = ["id", "company", "abbreviation", "last_price"]
+
+class DetailStockSerializer(serializers.ModelSerializer):
+    last_prices = serializers.SerializerMethodField()
+
+    def get_last_prices(self, obj):
+        last_price = PriceMovement.objects.get_stock_last_prices(obj)
+        return PriceMovementSerializer(last_price, many=True).data
+
+    class Meta:
+        model = Stock
+        fields = ["id", "company", "abbreviation", "last_prices"]
 
 
 class StockSimpleSerializer(serializers.ModelSerializer):
