@@ -73,9 +73,10 @@ class PortfolioView(GenericViewSet):
 
     def get(self, request, *args, **kwargs):
         user = request.user
+        user = User.objects.get(id=user.id)
         summary = Portfolio.objects.get_portfolio_summary(user)
 
-        serializer = PortfolioSerializer(summary, many=True)
+        serializer = PortfolioSerializer(summary)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

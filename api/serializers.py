@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Company, Stock, Portfolio, PriceMovement, Transaction
+from api.models import Company, Stock, PriceMovement, Transaction, User
 from django.contrib.auth.hashers import make_password
 
 
@@ -26,6 +26,7 @@ class ListStockSerializer(serializers.ModelSerializer):
         model = Stock
         fields = ["id", "company", "abbreviation", "last_price"]
 
+
 class DetailStockSerializer(serializers.ModelSerializer):
     last_prices = serializers.SerializerMethodField()
 
@@ -51,9 +52,16 @@ class TransactionSerializer(serializers.ModelSerializer):
 
 
 class PortfolioSerializer(serializers.Serializer):
-    stock_id = serializers.CharField()
-    stock_abbreviation = serializers.CharField()
-    total_quantity = serializers.IntegerField()
+    stocks = serializers.ListField()
+    my_cash = serializers.DecimalField(
+        max_digits=14, decimal_places=2, coerce_to_string=False
+    )
+
+
+class UserSerializer(serializers.Serializer):
+    class Meta:
+        model = User
+        fields = "__all__"
 
 
 class PriceMovementSerializer(serializers.ModelSerializer):

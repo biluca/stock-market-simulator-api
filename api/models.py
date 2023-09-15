@@ -38,14 +38,14 @@ class User(DjangoUser):
 
 class PortfolioManager(models.manager.Manager):
     def get_portfolio_summary(self, user):
-        portfolio = self.get(user=user)
+        portfolio, new = self.get_or_create(user=user)
         transactions = Transaction.objects.filter(portfolio=portfolio)
 
         summary = transactions.values("stock", "stock__abbreviation").annotate(
             total_quantity=Sum("quantity"),
         )
 
-        portfolio_summary = []
+        stocks = []
         for item in summary:
             data = {
                 "stock_id": item["stock"],
@@ -54,8 +54,9 @@ class PortfolioManager(models.manager.Manager):
             }
 
             if item["total_quantity"] > 0:
-                portfolio_summary.append(data)
+                stocks.append(data)
 
+        portfolio_summary = {"my_cash": user.cash, "stocks": stocks}
         return portfolio_summary
 
 
@@ -114,9 +115,9 @@ class PriceMovementManager(models.manager.Manager):
         return last_price
 
     def get_stock_last_prices(self, stock):
-        last_prices = (
-            PriceMovement.objects.filter(stock=stock).order_by("-created_at")[:20]
-        )
+        last_prices = PriceMovement.objects.filter(stock=stock).order_by("-created_at")[
+            :20
+        ]
         return last_prices
 
 
