@@ -1,20 +1,14 @@
 from django.db import models
-from django.db.models import Sum, Avg, F
+from django.db.models import Sum
 from django.contrib.auth.models import User as DjangoUser
 from uuid import uuid4
 from api.const import Industry
 
 
-class CreatedAndUpdatedModel(models.Model):
-    class Meta:
-        abstract = True
-
+class BaseModel:
+    id = models.UUIDField(default=uuid4, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-
-class BaseModel(CreatedAndUpdatedModel):
-    id = models.UUIDField(default=uuid4, primary_key=True)
 
     @property
     def uuid(self):

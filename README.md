@@ -1,17 +1,18 @@
 # Stock Market Simulator API
 
 <p align="center">
-TAKE THE DAM PICTURE!!
+<img src="stock_market_simulator_api/media/bawsaq.png" height="240"  />
+</p>
+
+<p align="center">
+Photo by <a href="https://unsplash.com/@karishea?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Kari Shea</a> on <a href="https://unsplash.com/photos/1SAnrIxw5OY?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 </p>
 
 ### Welcome to Stock Market Simulation API, a GTA V Inspired Application
 
-This is an exciting project developed to explore the depths of [Django Framework](https://www.djangoproject.com/) and expand proficiency in [Python](https://www.python.org/) programming. The concepts of this project were inspired by the game [GTA V](https://www.rockstargames.com/br/gta-v), specically on the [BAWSAQ](https://gta.fandom.com/wiki/BAWSAQ) and [LCN](https://gta.fandom.com/wiki/Liberty_City_National_Exchange) Stock Markets. The API provides the basic operations like Buying and Selling Stocks and also provides a feature to simulation the stock market prices variation.
+This is an exciting project developed to explore the depths of [Django Framework](https://www.djangoproject.com/) and expand proficiency in [Python](https://www.python.org/) programming. The concepts of this project were inspired by the game [GTA V](https://www.rockstargames.com/br/gta-v), specically on the [BAWSAQ](https://gta.fandom.com/wiki/BAWSAQ) and [LCN](https://gta.fandom.com/wiki/Liberty_City_National_Exchange) "Fake" Stock Markets. The API provides the basic operations like Buying and Selling Stocks and also provides a feature to simulation the stock market prices variation.
 
-<p align="center">
-<img src="stock_market_simulator_api/media/bawsaq.png" height="180"  />
 
-</p>
 
 ## Before Running
 
@@ -38,6 +39,12 @@ Once you install Docker & Docker Compose on your computer ([see details here](ht
 ```sh
 docker-compose up
 ```
+
+## Testing
+```sh
+make test
+```
+This command will run the Unit Tests implemented for the Application.
 
 ## Contact Info
 
