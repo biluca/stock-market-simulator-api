@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "006a614a-c816-446f-8652-aee450da1e08",
+		"_postman_id": "534cec0a-ebe9-4711-8eea-f27482573310",
 		"name": "Stock Market Simulation API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17178766"
@@ -49,7 +49,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://0.0.0.0:8000/companies/34fcfff8-c8bf-4a1f-af37-cf6667bd5ff5",
+							"raw": "http://0.0.0.0:8000/companies/8d84ceb3-bb7f-4c10-be52-6139d6632e03",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -60,7 +60,7 @@
 							"port": "8000",
 							"path": [
 								"companies",
-								"34fcfff8-c8bf-4a1f-af37-cf6667bd5ff5"
+								"8d84ceb3-bb7f-4c10-be52-6139d6632e03"
 							]
 						}
 					},
@@ -90,10 +90,10 @@
 							"raw": "http://0.0.0.0:8000/companies/",
 							"protocol": "http",
 							"host": [
-								"127",
 								"0",
 								"0",
-								"1"
+								"0",
+								"0"
 							],
 							"port": "8000",
 							"path": [
@@ -117,7 +117,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n   \n    \"name\": \"B8 Technologies\",\n    \"ceo_name\": \"Vinicios Biluca\",\n    \"description\": \"Changing the World!\",\n    \"industry\": \"TECHONOLOGY\"\n}",
+							"raw": "{\n    \"name\": \"B8 Technologies Corporation\",\n    \"industry\": \"TECHONOLOGY\",\n    \"ceo_name\": \"Vinicios Biluca\",\n    \"description\": \"Always in pursuit of Happiness\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -125,18 +125,18 @@
 							}
 						},
 						"url": {
-							"raw": "http://0.0.0.0:8000/companies/b71666d2-1af2-4698-ba56-0490d6c97cd6/",
+							"raw": "http://0.0.0.0:8000/companies/f2b129c3-2184-45b5-9936-4863c458aa41/",
 							"protocol": "http",
 							"host": [
-								"127",
 								"0",
 								"0",
-								"1"
+								"0",
+								"0"
 							],
 							"port": "8000",
 							"path": [
 								"companies",
-								"b71666d2-1af2-4698-ba56-0490d6c97cd6",
+								"f2b129c3-2184-45b5-9936-4863c458aa41",
 								""
 							]
 						}
@@ -164,18 +164,18 @@
 							}
 						},
 						"url": {
-							"raw": "http://0.0.0.0:8000/companies/a7acf24b-8a23-4859-84bc-176d62978f39/",
+							"raw": "http://0.0.0.0:8000/companies/68672ad7-6834-41ba-90c6-d49af8ba1254/",
 							"protocol": "http",
 							"host": [
-								"127",
 								"0",
 								"0",
-								"1"
+								"0",
+								"0"
 							],
 							"port": "8000",
 							"path": [
 								"companies",
-								"a7acf24b-8a23-4859-84bc-176d62978f39",
+								"68672ad7-6834-41ba-90c6-d49af8ba1254",
 								""
 							]
 						}
@@ -227,7 +227,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://0.0.0.0:8000/stocks/cc4b7c78-e75a-41bf-bf98-1c5cf9390790",
+							"raw": "http://0.0.0.0:8000/stocks/638b2511-c44e-4cae-80fc-6d8fdca0caf4",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -238,7 +238,7 @@
 							"port": "8000",
 							"path": [
 								"stocks",
-								"cc4b7c78-e75a-41bf-bf98-1c5cf9390790"
+								"638b2511-c44e-4cae-80fc-6d8fdca0caf4"
 							]
 						}
 					},
@@ -257,7 +257,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n   \n}",
+							"raw": "{\n   \"company\": \"f2b129c3-2184-45b5-9936-4863c458aa41\",\n   \"abbreviation\": \"B8T\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -268,10 +268,10 @@
 							"raw": "http://0.0.0.0:8000/stocks/",
 							"protocol": "http",
 							"host": [
-								"127",
 								"0",
 								"0",
-								"1"
+								"0",
+								"0"
 							],
 							"port": "8000",
 							"path": [
@@ -295,7 +295,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\n    \"abbreviation\": \"B8T\",\n     \"company\": \"73055dbe-2660-4471-b435-64981e35d7af\"\n  \n}",
+							"raw": "{\n   \"company\": \"f2b129c3-2184-45b5-9936-4863c458aa41\",\n   \"abbreviation\": \"B8T\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -303,18 +303,18 @@
 							}
 						},
 						"url": {
-							"raw": "http://0.0.0.0:8000/stocks/539fc062-e347-4ddd-9e79-f03f8395065c/",
+							"raw": "http://0.0.0.0:8000/stocks/86d97ffc-83a5-4c14-b7d3-d332aa92cb69/",
 							"protocol": "http",
 							"host": [
-								"127",
 								"0",
 								"0",
-								"1"
+								"0",
+								"0"
 							],
 							"port": "8000",
 							"path": [
 								"stocks",
-								"539fc062-e347-4ddd-9e79-f03f8395065c",
+								"86d97ffc-83a5-4c14-b7d3-d332aa92cb69",
 								""
 							]
 						}
@@ -333,18 +333,18 @@
 							}
 						],
 						"url": {
-							"raw": "http://0.0.0.0:8000/stocks/62759e68-1ad3-47e6-968e-33f76a34c703/",
+							"raw": "http://0.0.0.0:8000/stocks/9ec3e872-1799-47f6-bd75-6a778be0c9ff/",
 							"protocol": "http",
 							"host": [
-								"127",
 								"0",
 								"0",
-								"1"
+								"0",
+								"0"
 							],
 							"port": "8000",
 							"path": [
 								"stocks",
-								"62759e68-1ad3-47e6-968e-33f76a34c703",
+								"9ec3e872-1799-47f6-bd75-6a778be0c9ff",
 								""
 							]
 						}
@@ -369,7 +369,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"stock_abbreviation\": \"AMU\",\n    \"quantity\": 8\n}",
+							"raw": "{\n    \"stock_abbreviation\": \"LFI\",\n    \"quantity\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -380,10 +380,10 @@
 							"raw": "http://0.0.0.0:8000/operation/buy/",
 							"protocol": "http",
 							"host": [
-								"127",
 								"0",
 								"0",
-								"1"
+								"0",
+								"0"
 							],
 							"port": "8000",
 							"path": [
@@ -408,7 +408,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"stock_abbreviation\": \"AMU\",\n    \"quantity\": 11\n}",
+							"raw": "{\n    \"stock_abbreviation\": \"LFI\",\n    \"quantity\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -419,10 +419,10 @@
 							"raw": "http://0.0.0.0:8000/operation/sell/",
 							"protocol": "http",
 							"host": [
-								"127",
 								"0",
 								"0",
-								"1"
+								"0",
+								"0"
 							],
 							"port": "8000",
 							"path": [
@@ -449,10 +449,10 @@
 							"raw": "http://0.0.0.0:8000/operation/portfolio/",
 							"protocol": "http",
 							"host": [
-								"127",
 								"0",
 								"0",
-								"1"
+								"0",
+								"0"
 							],
 							"port": "8000",
 							"path": [
@@ -536,7 +536,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"trevor\",\n    \"password\": \"trevor\"\n}"
+							"raw": "{\n    \"username\": \"biluca\",\n    \"password\": \"biluca\"\n}"
 						},
 						"url": {
 							"raw": "http://0.0.0.0:8000/login/",

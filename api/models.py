@@ -5,7 +5,7 @@ from uuid import uuid4
 from api.const import Industry
 
 
-class BaseModel:
+class BaseModel(models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -63,9 +63,6 @@ class Portfolio(BaseModel):
 
 
 class Company(BaseModel):
-    class Meta:
-        verbose_name_plural = "Companies"
-
     name = models.CharField(max_length=128, null=False)
     ceo_name = models.CharField(max_length=128, null=True)
     description = models.CharField(max_length=256, null=True)

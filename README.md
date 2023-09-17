@@ -12,6 +12,8 @@ Photo by <a href="https://unsplash.com/@karishea?utm_source=unsplash&utm_medium=
 
 This is an exciting project developed to explore the depths of [Django Framework](https://www.djangoproject.com/) and expand proficiency in [Python](https://www.python.org/) programming. The concepts of this project were inspired by the game [GTA V](https://www.rockstargames.com/br/gta-v), specically on the [BAWSAQ](https://gta.fandom.com/wiki/BAWSAQ) and [LCN](https://gta.fandom.com/wiki/Liberty_City_National_Exchange) "Fake" Stock Markets. The API provides the basic operations like Buying and Selling Stocks and also provides a feature to simulation the stock market prices variation.
 
+You can take a look at this YouTube Video where I go through a Overview about this project.
+
 
 
 ## Before Running
@@ -19,12 +21,17 @@ This is an exciting project developed to explore the depths of [Django Framework
 Run the following commands:
 
 ```sh
+pip install -r requirements.txt
+```
+This installs all of the modules listed in our Python requirements file into our project environment.
+
+```sh
 make migrations
 ```
 ```sh
 make migrate
 ```
-This commands will create a simple database on which the application will work.
+This commands will create a simple database on which the application will work. There are Scripts that will insert Sample Data on the Database, that way you can start playing around with the API right away.
 
 ## Running the Application
 ```sh
