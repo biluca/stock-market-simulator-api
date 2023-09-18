@@ -1,8 +1,9 @@
 import pytest
-
+import json
 from api.models import Company
 
 COMPANY_API_URL = "companies"
+
 
 @pytest.mark.django_db
 class TestCompanyAPI:
@@ -25,6 +26,19 @@ class TestCompanyAPI:
         payload = {}
         response = api_client.post(f"/{COMPANY_API_URL}/", payload)
         assert response.status_code == 400
+
+    def test_retrieve_company(self, api_client, company):
+        id = company.id
+        response = api_client.get(f"/{COMPANY_API_URL}/{id}/")
+        data = response.data
+
+        assert response.status_code <= 400
+        
+        data_file = open("api/tests/scenarios/companies/001.json")
+        expected_data = json.load(data_file)
+
+        data.pop("id")
+        assert data == expected_data
 
     def test_retrieve_companies(self, api_client):
         response = api_client.get(f"/{COMPANY_API_URL}/")
