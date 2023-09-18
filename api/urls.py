@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from api.views import (
+    WelcomeView,
     SimulateStockMartketView,
     CompanyView,
     StockView,
@@ -15,6 +16,7 @@ router.register(r"companies", CompanyView)
 router.register(r"stocks", StockView)
 
 urlpatterns = [
+    path("", WelcomeView.as_view({"get": "welcome"}), name="welcome"),
     path("", include(router.urls)),
     path("operation/buy/", BuyStockView.as_view({"post": "buy"}), name="buy-stock"),
     path("operation/sell/", SellStockView.as_view({"post": "sell"}), name="sell-stock"),

@@ -1,6 +1,8 @@
+from rest_framework import renderers
+from django.shortcuts import render
+
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
-from rest_framework.request import Request
 from rest_framework import status
 from rest_framework import permissions
 
@@ -20,6 +22,12 @@ from api.serializers import (
     OperationStockSerializer,
 )
 
+class WelcomeView(GenericViewSet):
+    renderer_classes = [renderers.TemplateHTMLRenderer]
+    template_name = 'working.html'
+
+    def welcome(self, request, *args, **kwargs):
+        return render(request, self.template_name)
 
 class ListDetailModelViewSet(ModelViewSet):
     detail_serializer_class = None
